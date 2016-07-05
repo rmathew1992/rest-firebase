@@ -7,7 +7,7 @@ require 'rest-core/util/hmac'
 # https://www.firebase.com/docs/rest-api.html
 # https://www.firebase.com/docs/rest/guide/retrieving-data.html#section-rest-queries
 RestFirebase =
-  RestCore::Builder.client(:d, :secret, :auth, :auth_ttl, :iat) do
+  RestCore::Builder.client(:d, :secret, :auth, :auth_ttl, :iat, :d, :kid) do
     use RestCore::DefaultSite   , 'https://SampleChat.firebaseIO-demo.com/'
     use RestCore::DefaultHeaders, {'Accept' => 'application/json',
                              'Content-Type' => 'application/json'}
@@ -92,7 +92,7 @@ module RestFirebase::Client
       "Please set your secret") unless secret
 
     self.iat = nil
-    header = {:typ => 'JWT', :alg => 'HS256'}
+    header = {:typ => 'JWT', :alg => 'HS256', :kid => kid}
     claims = {:v => 0, :iat => iat, :d => d}.merge(opts)
     # http://tools.ietf.org/html/draft-ietf-jose-json-web-signature-26
     input = [header, claims].map{ |d| base64url(RestCore::Json.encode(d)) }.
