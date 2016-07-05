@@ -92,6 +92,8 @@ module RestFirebase::Client
       "Please set your secret") unless secret
 
     self.iat = nil
+    puts 'KID equals: '
+    puts kid
     header = {:typ => 'JWT', :alg => 'HS256', :kid => kid}
     claims = {:v => 0, :iat => iat, :d => d}.merge(opts)
     # http://tools.ietf.org/html/draft-ietf-jose-json-web-signature-26
